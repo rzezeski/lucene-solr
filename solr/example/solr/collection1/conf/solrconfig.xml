@@ -1588,6 +1588,16 @@
     </highlighting>
   </searchComponent>
 
+  <!-- HTTP Shard Handler -->
+  <httpShardHandlerFactory class="org.apache.solr.handler.component.HttpShardHandlerFactory">
+    <str name="client.class">com.basho.yokozuna.SolrDistSearchClient</str>
+    <str name="client.nagle">false</str>
+    <str name="client.conns.per.route">10</str>
+    <str name="client.conns.total">100</str>
+    <str name="handler.pool.max.size">100</str>
+    <str name="handler.queue.size">10</str>
+  </httpShardHandlerFactory>
+
   <!-- Update Processors
 
        Chains of Update Processor Factories for dealing with Update
