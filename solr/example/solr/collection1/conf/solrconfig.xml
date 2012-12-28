@@ -807,7 +807,13 @@
          <str>nameOfCustomComponent2</str>
        </arr>
       -->
-    </requestHandler>
+
+    <!-- Uncomment if using a custom shf component -->
+    <!-- <arr name="last-components"> -->
+    <!--   <str>shf</str> -->
+    <!-- </arr> -->
+
+  </requestHandler>
 
   <!-- A request handler that returns indented JSON by default -->
   <requestHandler name="/query" class="solr.SearchHandler">
@@ -1457,6 +1463,15 @@
   </requestHandler>
 
 
+  <!-- HTTP Shard Handler Example -->
+  <!-- <searchComponent name="shf" class="com.basho.yokozuna.ShardHandlerFactory"> -->
+  <!--   <str name="client.class">org.apache.solr.client.solrj.impl.HttpClientUtil</str> -->
+  <!--   <str name="client.conns.per.route">10</str> -->
+  <!--   <str name="client.conns.total">100</str> -->
+  <!--   <str name="handler.pool.max.size">100</str> -->
+  <!--   <str name="handler.queue.size">10</str> -->
+  <!-- </searchComponent>> -->
+
   <!-- Query Elevation Component
 
        http://wiki.apache.org/solr/QueryElevationComponent
@@ -1587,16 +1602,6 @@
       </boundaryScanner>
     </highlighting>
   </searchComponent>
-
-  <!-- HTTP Shard Handler -->
-  <httpShardHandlerFactory class="org.apache.solr.handler.component.HttpShardHandlerFactory">
-    <str name="client.class">com.basho.yokozuna.SolrDistSearchClient</str>
-    <str name="client.nagle">false</str>
-    <str name="client.conns.per.route">10</str>
-    <str name="client.conns.total">100</str>
-    <str name="handler.pool.max.size">100</str>
-    <str name="handler.queue.size">10</str>
-  </httpShardHandlerFactory>
 
   <!-- Update Processors
 
