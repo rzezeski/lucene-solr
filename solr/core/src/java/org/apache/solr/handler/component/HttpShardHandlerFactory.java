@@ -17,6 +17,7 @@ package org.apache.solr.handler.component;
  */
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.client.HttpClient;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpClientUtil;
@@ -153,6 +154,8 @@ public class HttpShardHandlerFactory extends ShardHandlerFactory implements org.
     clientParams.set(HttpClientUtil.PROP_CONNECTION_TIMEOUT, connectionTimeout);
     clientParams.set(HttpClientUtil.PROP_USE_RETRY, false);
     this.defaultClient = HttpClientUtil.createClient(clientParams);
+    this.defaultClient.getParams().setParameter(HttpConnectionParams.STALE_CONNECTION_CHECK, false);
+    this.defaultClient.getParams().setParameter(HttpConnectionParams.TCP_NODELAY, true);
     this.loadbalancer = createLoadbalancer(defaultClient);
   }
 

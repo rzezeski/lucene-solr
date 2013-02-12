@@ -18,6 +18,9 @@ package org.apache.solr.client.solrj.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.InflaterInputStream;
 
@@ -110,6 +113,16 @@ public class HttpClientUtil {
       logger.debug("Creating new http client, config:" + config);
     }
     final DefaultHttpClient httpClient = new SystemDefaultHttpClient();
+    final org.apache.http.conn.ClientConnectionManager mgr = httpClient.getConnectionManager();
+
+    // NOTE: The sweeper task is assuming hard-coded Jetty max-idle of 50s.
+    final Runnable sweeper = new Runnable() {
+            public void run() {
+                mgr.closeIdleConnections(40, TimeUnit.SECONDS);
+            }
+        };
+    final ScheduledExecutorService stp = Executors.newScheduledThreadPool(1);
+    stp.scheduleWithFixedDelay(sweeper, 5, 5, TimeUnit.SECONDS);
     configureClient(httpClient, config);
     return httpClient;
   }
